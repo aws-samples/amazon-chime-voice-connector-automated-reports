@@ -30,6 +30,30 @@ This project processes the CDR record as soon as it is placed in the specified S
 
 ## Getting Started
 
+
+## Quick Start
+The quick start guide is intended to deploy the sample application in your own AWS account using a cloud formation template.
+
+Quick Start Setup
+1.	Sign-in to AWS or [Create an Account](https://us-west-2.console.aws.amazon.com)
+2.	Create a target S3 bucket - [Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html)
+3.	Upload packaged code **‘pricefunction-1.0.0.jar’** provided in project root directory to your AWS Bucket.
+4.	Using AWS Console, select **‘CloudFormation’** from the list of AWS Services.
+5.	Choose **‘Create Stack’**.  
+6.	Select **‘Template is ready’** and **‘Upload a template file’**
+
+![creating a stack](images/creating_a_stack.png)
+
+7.	Choose **‘cloud_formation_template.yaml’** file located in project root directory.
+8.	Click **‘Next’**
+9.	On the next page, specify stack details
+a.	Enter a **stack name**
+b.	Under Parameters, enter value for the following:
+i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector)
+ii.	**LambdaCode** - Specify the name of the lambda code you uploaded earlier (i.e. ‘pricefunction-1.0.0.jar’)
+iii.	**TargetBucketName** – Enter the name of the target bucket you created earlier.
+c.	Click **Next**
+
 Be sure to:
 
 * Change the title in this README
