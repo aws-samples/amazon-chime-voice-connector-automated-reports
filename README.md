@@ -22,7 +22,7 @@ https://api.pricing.us-east-1.amazonaws.com
 
 https://api.pricing.ap-south-1.amazonaws.com
 
-Hence, this code makes an assumption that all artifacts, including lambda and S3 bucket will be deployed in us-east-1 (N.Virginia) region. 
+Hence, this code makes an assumption that all artifacts, including lambda and S3 buckets will be deployed in us-east-1 (N.Virginia) region. 
 
 Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
 
