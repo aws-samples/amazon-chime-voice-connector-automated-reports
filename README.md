@@ -30,6 +30,9 @@ This project processes the CDR record as soon as it is placed in the specified S
 
 ## Getting Started
 
+### Pre-requisites
+1. Chime Voice Connector has been setup - See [Creating Amazon Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/create-voicecon.html)
+2. Call CDR logging is enabled
 
 ## Quick Start
 The quick start guide is intended to deploy the sample application in your own AWS account using a cloud formation template.
@@ -47,10 +50,15 @@ Quick Start Setup
 7.	Choose **‘cloud_formation_template.yaml’** file located in project root directory.
 8.	Click **‘Next’**
 9.	On the next page, specify stack details
+
 a.	Enter a **stack name**
+
 b.	Under Parameters, enter value for the following:
+
 i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector)
+
 ii.	**LambdaCode** - Specify the name of the lambda code you uploaded earlier (i.e. ‘pricefunction-1.0.0.jar’)
+
 iii.	**TargetBucketName** – Enter the name of the target bucket you created earlier.
 
 c.	Click **Next**
@@ -59,6 +67,31 @@ c.	Click **Next**
 
 10.	Leave all of the default fields and click **“Next’**
 11.	Acknowledge access capabilities and Choose **Create Stack**.
+
+Once cloud formation has successfully completed, you should have a lambda function deployed.  
+
+###Configuring Event Notification
+
+1.	Select **S3 service** from AWS Console
+2.	Select the original S3 bucket that stores your CDR records (This is the bucket that chime voice connector stores CDR records).
+3.	Click on bucket name
+4.	Click on **‘Properties’** tab
+5.	Scroll down to **Advanced Settings** tab and choose **Events**
+
+![Configuring Events](images/s3_event_settings.png)
+
+6.	Click **‘Add Notification’**
+7.	Enter a name
+8.	Choose **‘All object create** events’
+9.	Insert **‘.json’** for suffix
+10.	Chose Send to Lambda Function.
+11.	Choose lambda function that was created by your stack
+
+![Lambda Event Notification](images/put_object_s3.png)
+
+12. Click **Save**
+
+
 
 Be sure to:
 
