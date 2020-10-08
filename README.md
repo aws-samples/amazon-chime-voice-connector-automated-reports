@@ -39,7 +39,7 @@ The quick start guide is intended to deploy the sample application in your own A
 
 Quick Start Setup
 1.	Sign-in to AWS or [Create an Account](https://us-west-2.console.aws.amazon.com)
-2.	Create a S3 bucket - [Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).  This will be known as the **target** S3 bucket and will be used to store enriched CDR records.
+2.	[Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).  This will be known as the **target** S3 bucket and will be used to store enriched CDR records.
 3.	Upload packaged code **‘pricefunction-1.0.0.jar’** provided in project root directory to your AWS Bucket.
 4.	Using AWS Console, select **‘CloudFormation’** from the list of AWS Services.
 5.	Choose **‘Create Stack’**.  
