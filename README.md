@@ -52,7 +52,13 @@ b.	Under Parameters, enter value for the following:
 i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector)
 ii.	**LambdaCode** - Specify the name of the lambda code you uploaded earlier (i.e. ‘pricefunction-1.0.0.jar’)
 iii.	**TargetBucketName** – Enter the name of the target bucket you created earlier.
+
 c.	Click **Next**
+
+![stack details](images/stack_details.png)
+
+10.	Leave all of the default fields and click **“Next’**
+11.	Acknowledge access capabilities and Choose **Create Stack**.
 
 Be sure to:
 
