@@ -40,14 +40,14 @@ Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report o
 
 ### Pre-requisites
 1. Chime Voice Connector has been setup - See [Creating Amazon Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/create-voicecon.html)
-2. Voice Connector CDR logging is enabled.  The corresponding S3 bucket that stores CDR log files will be referenced as the **source** S3 bucket.
+2. Voice Connector CDR logging is enabled.  The corresponding S3 bucket that stores CDR log files will be referenced as the **source** S3 bucket.  Please ensure this bucket is located in us-east-1 (N.Virginia) region.
 
 ## Quick Start
 The quick start guide is intended to deploy the sample application in your own AWS account using a cloud formation template.
 
 Quick Start Setup
 1.	Sign-in to AWS or [Create an Account](https://us-west-2.console.aws.amazon.com)
-2.	[Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).  This will be known as the **target** S3 bucket and will be used to store enriched CDR records.
+2.	[Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).  This will be known as the **target** S3 bucket and will be used to store enriched CDR records.  Please make sure your bucket is located in us-east-1 region.
 3.	Upload packaged code **‘pricefunction-1.0.0.jar’** provided in project root directory to your AWS Bucket.
 4.	Using AWS Console, select **‘CloudFormation’** from the list of AWS Services.
 5.	Choose **‘Create Stack’**.  
