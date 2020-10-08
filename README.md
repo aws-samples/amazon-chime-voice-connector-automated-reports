@@ -8,7 +8,7 @@ Whenever you place a phone call, Voice Connector generates a Call Detail Record 
 
 This sample project enriches the CDR record with the total cost of the phone call and allows you to visualize the daily, weekly and monthly costs through AWS QuickSight.
 
-Note: This project only processes Call Detail Records (CDR) for Chime Voice Connector.  Business Connector CDRs are not considered or processed. 
+Note: This project only processes Call Detail Records (CDR) for Chime Voice Connector.   Business Connector CDRs are not considered or processed. 
 
 ## Architecture
 
@@ -16,7 +16,7 @@ Note: This project only processes Call Detail Records (CDR) for Chime Voice Conn
 
 When configuring [Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/voice-connectors.html), you can enable logging by specifying an S3 bucket for the log destination.  Once Voice Connector CDR logging is enabled, Chime Voice Connector automatically places CDR records in the specified S3 bucket at the end of each phone call.  
 
-This project processes the CDR record as soon as it is placed in the specified S3 bucket. A lambda function is triggered to enrich the CDR record with the cost of the phone call and places the final CDR record back in S3.  The lambda function leverages [Chime Voice Connector Price List] (https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/ AmazonChimeVoiceConnector  /current/us-east-1/index.json) API to get the latest pricing for each CDR record.  Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
+This project processes the CDR record as soon as it is placed in the specified S3 bucket. A lambda function is triggered to enrich the CDR record with the cost of the phone call and places the final CDR record back in S3.  The lambda function leverages [AWS Pricing API](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-pelong.html) to get the latest pricing for each CDR record.  Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
 
 ### Voice Record Enrichment Flow
 
