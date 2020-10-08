@@ -20,11 +20,11 @@ This project processes the CDR record as soon as it is placed in the specified S
 
 ### Voice Record Enrichment Flow
 
-1.	CDR record is sent to Amazon S3 at the end of each phone call.  Typically, the S3 bucket is automatically created by chime voice connector.
+1.	Once CDR logging is enabled in Amazon Chime Voice Connector, CDR records are automatically sent to the specified Amazon S3 bucket (source bucket) at the end of each phone call.  
 2.	When CDR record is placed in S3, a lambda event notification is triggered to enrich the CDR record with the latest pricing information.
 3.	Lambda retrieves the CDR record for processing
 4.	Chime Voice Connector Price List API is called to get the latest pricing for the given CDR record.
-5.	CDR is enriched with the total cost and placed back on S3.
+5.	CDR is enriched with the total cost and placed back on S3 (i.e. target bucket)
 6.	QuickSight data is refreshed and reports are updated.
 
 
