@@ -16,7 +16,15 @@ Note: This project only processes Call Detail Records (CDR) for Chime Voice Conn
 
 When configuring [Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/voice-connectors.html), you can enable logging by specifying an S3 bucket for the log destination.  Once Voice Connector CDR logging is enabled, Chime Voice Connector automatically places CDR records in the specified S3 bucket at the end of each phone call.  
 
-This project processes the CDR record as soon as it is placed in the specified S3 bucket. A lambda function is triggered to enrich the CDR record with the cost of the phone call and places the final CDR record back in S3.  The lambda function leverages [AWS Pricing API](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-pelong.html) to get the latest pricing for each CDR record.  Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
+This project processes the CDR record as soon as it is placed in the specified S3 bucket. A lambda function is triggered to enrich the CDR record with the cost of the phone call and places the final CDR record back in S3.  The lambda function leverages [AWS Pricing API](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-pelong.html) to get the latest pricing for each CDR record.  Please note that AWS Price List Service API provides the following two endpoints:
+
+https://api.pricing.us-east-1.amazonaws.com
+
+https://api.pricing.ap-south-1.amazonaws.com
+
+Hence, this code makes an assumption that all artifacts, including lambda and S3 bucket will be deployed in us-east-1 (N.Virginia) region. 
+
+Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
 
 ### Voice Record Enrichment Flow
 
@@ -98,6 +106,16 @@ Once cloud formation has successfully completed, you should have a lambda functi
 2. Go to the **target** bucket
 3. Find the CDR that corresponds to the phone call that was just made.
 4. Notice that a new field (
+
+
+## Building from the source
+1. Clone this repository
+2. Uplaod the sample CDR record **price_lookup_function/src/test/resources/cdr_sample.json** to your source S3 bucket.
+4. Configure **s3-event-put.json** file located under **price_lookup_function/src/test/resoruces** to match your envionrment. 
+5. Ensure sample CDR record is under Amazon-Chime-Voice-Connector-CDRs/json directory in your source bucket.  Otherwise, unit test will not pass.
+6. Run mvn clean install to build code inside price_lookup_function
+
+   
 
 Be sure to:
 
