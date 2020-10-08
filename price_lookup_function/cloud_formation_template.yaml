@@ -1,0 +1,61 @@
+Transform: 'AWS::Serverless-2016-10-31'
+
+
+Parameters:
+ ExistingCDRBucketName:
+    Type: "String"
+ TargetBucketName:
+    Type: "String"
+ LambdaCode:   
+    Type: "String"
+    Default: "pricefunction-1.0.0.jar"  
+    
+Resources:
+    
+  LambdaFunctionHandler:
+    # This resource creates a Lambda function.
+    Type: 'AWS::Serverless::Function'
+    
+    Properties:
+    
+      Description: Lambda handler for enriching CDR records with price per call
+      # Time out value to 30 seconds
+      Timeout: 30
+      
+      # Initial Memory size
+      MemorySize: 512
+      
+      # The location of the Lambda function code. 
+      # CloudFormation: When using with cloudformation, bucket must exists and code must be uploaded.
+      # Sam:  Builds code using maven.  Defaults to './' when used with sam. Same as CudeURI: ./
+      
+      #CodeUri: ./
+      
+      CodeUri:
+           #!Ref function allows you to fetch value 
+           #of parameters and other resources at runtime
+          Bucket: !Ref TargetBucketName
+          Key: !Ref LambdaCode
+      
+      # This function uses Java8 runtime.
+      Runtime: java8
+        
+      # This is the Lambda function's handler.
+      Handler: com.amazonaws.samples.chimevoiceconnector.LambdaFunctionHandler
+      
+      #Lambda enviornment variables
+      Environment:
+        Variables:
+          TARGET_BUCKET_NAME: !Ref TargetBucketName
+          
+      #Lambda inline policy
+      Policies:
+         - AWSLambdaExecute # Managed Policy
+         - Version: '2012-10-17' # Policy Document
+           Statement: #- Allow read only access to data 
+            - Sid: PricingPolicy
+              Effect: Allow
+              Action:
+                - 'pricing:*'
+              Resource: '*'
+         
