@@ -32,18 +32,20 @@ This project processes the CDR record as soon as it is placed in the specified S
 
 ### Pre-requisites
 1. Chime Voice Connector has been setup - See [Creating Amazon Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/create-voicecon.html)
-2. Call CDR logging is enabled
+2. Voice Connector CDR logging is enabled.  The corresponding S3 bucket that stores CDR log files will be referenced as the **source** S3 bucket.
 
 ## Quick Start
 The quick start guide is intended to deploy the sample application in your own AWS account using a cloud formation template.
 
 Quick Start Setup
 1.	Sign-in to AWS or [Create an Account](https://us-west-2.console.aws.amazon.com)
-2.	Create a target S3 bucket - [Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html)
+2.	Create a S3 bucket - [Create an AWS Bucket](https://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html).  This will be known as the **target** S3 bucket and will be used to store enriched CDR records.
 3.	Upload packaged code **‘pricefunction-1.0.0.jar’** provided in project root directory to your AWS Bucket.
 4.	Using AWS Console, select **‘CloudFormation’** from the list of AWS Services.
 5.	Choose **‘Create Stack’**.  
 6.	Select **‘Template is ready’** and **‘Upload a template file’**
+
+**Note:**. Please make sure that your cloudformation region (i.e. N.Virginia) is in the same region as your source and target S3 buckets.
 
 ![creating a stack](images/creating_a_stack.png)
 
@@ -91,7 +93,11 @@ Once cloud formation has successfully completed, you should have a lambda functi
 
 12. Click **Save**
 
-
+## Test CDR Enrichment
+1. Place a phone call using your Amazon Chime Voice Connector. 
+2. Go to the **target** bucket
+3. Find the CDR that corresponds to the phone call that was just made.
+4. Notice that a new field (
 
 Be sure to:
 
