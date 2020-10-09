@@ -128,6 +128,8 @@ If you are interested in modifying this code, you can go ahead and clone the rep
        ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
 6. Run **mvn clean install** to build code inside price_lookup_function
 
+## QuickSight Reports - Coming Soon !
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
