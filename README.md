@@ -93,19 +93,21 @@ Once cloud formation has successfully completed, you should have a lambda functi
 6.	Click **‘Add Notification’**
 7.	Enter a name
 8.	Choose **‘All object create** events’
-9.	Insert **‘.json’** for suffix
+9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix
 10.	Chose Send to Lambda Function.
 11.	Choose lambda function that was created by your stack
 
-![Lambda Event Notification](images/put_object_s3.png)
+![Lambda Event Notification](images/event_config.png)
 
 12. Click **Save**
 
 ## Test CDR Enrichment
-1. Place a phone call using your Amazon Chime Voice Connector. 
+1. Place a phone call using your Amazon Chime Voice Connector. If you would simply like to test the lambda function, you can uplaod the sample CDR provided at root of this project (cdr_sample_2) to your **source** S3 bucket.
 2. Go to the **target** bucket
 3. Find the CDR that corresponds to the phone call that was just made.
-4. Notice that a new field (
+4. Notice that a new field - **CostUSD** which calculates the total cost of the phone call
+
+![Enriched CDR](images/final CDR.png)
 
 
 ## Deploying from the source
@@ -125,13 +127,6 @@ If you are interested in modifying this code, you can go ahead and clone the rep
        i. specify source bucket name (i.e. Chimevoiceconnector-reports)
        ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
 6. Run **mvn clean install** to build code inside price_lookup_function
-
-   
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
 
 ## Security
 
