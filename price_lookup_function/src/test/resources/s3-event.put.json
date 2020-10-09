@@ -20,7 +20,7 @@
                     "ownerIdentity": {
                         "principalId": "A21W5WNAR6XYKM"
                     },
-                    "arn": "arn:aws:s3:::chimevoiceconnector-reports"
+                    "arn": "arn:aws:s3:::{Enter-Your-Source-Bucket}"
                 },
                 "object": {
                     "key": "Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json",
