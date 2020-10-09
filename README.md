@@ -108,12 +108,23 @@ Once cloud formation has successfully completed, you should have a lambda functi
 4. Notice that a new field (
 
 
-## Building from the source
+## Deploying from the source
+If you are interested in modifying this code, you can go ahead and clone the repository and follow the insructions below:
+
+### Pre-requisites
+1. Chime Voice Connector has been setup - See [Creating Amazon Chime Voice Connector](https://docs.aws.amazon.com/chime/latest/ag/create-voicecon.html)
+2. Voice Connector CDR logging is enabled.  The corresponding S3 bucket that stores CDR log files will be referenced as the **source** S3 bucket.  Please ensure this bucket is located in us-east-1 (N.Virginia) region.
+3. [Install Maven](https://maven.apache.org/install.html)
+
+
+### Building Source code
 1. Clone this repository
 2. Uplaod the sample CDR record **price_lookup_function/src/test/resources/cdr_sample.json** to your source S3 bucket.
-4. Configure **s3-event-put.json** file located under **price_lookup_function/src/test/resoruces** to match your envionrment. 
-5. Ensure sample CDR record is under Amazon-Chime-Voice-Connector-CDRs/json directory in your source bucket.  Otherwise, unit test will not pass.
-6. Run mvn clean install to build code inside price_lookup_function
+4. If running unit test:
+   a. Configure **s3-event-put.json** file located under **price_lookup_function/src/test/resoruces** to match your envionrment. 
+       i. specify source bucket name (i.e. Chimevoiceconnector-reports)
+       ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
+6. Run **mvn clean install** to build code inside price_lookup_function
 
    
 
