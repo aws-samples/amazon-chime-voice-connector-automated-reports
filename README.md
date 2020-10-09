@@ -107,7 +107,7 @@ Once cloud formation has successfully completed, you should have a lambda functi
 3. Find the CDR that corresponds to the phone call that was just made.
 4. Notice that a new field - **CostUSD** which calculates the total cost of the phone call
 
-![Enriched CDR](images/final CDR.png)
+![Enriched CDR](images/final_CDR.png)
 
 
 ## Deploying from the source
