@@ -128,13 +128,26 @@ If you are interested in modifying this code, you can go ahead and clone the rep
        ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
 6. Run **mvn clean install** to build code inside price_lookup_function
 
-## QuickSight Reports - Coming Soon !
+## QuickSight Reports
+1. In the AWS service console, search for AWS *QuickSight *service.
+2. On the right hand side go to *Datasets*. 
+3. Click ‘**New dataset**' 
+![Image of Data Set](images/newdataset.png)
+4. From the Create a Data Set page, click on the* S3 option*.
+5. Enter the following information:
+    - Data Source Name - Enter target bucket name
+    - Manifest file example  
+      
+    CODE
 
 ## Security
-
+    CODE
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
+
+
+END
