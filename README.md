@@ -65,7 +65,7 @@ a.	Enter a **stack name**
 
 b.	Under Parameters, enter value for the following:
 
-i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector)
+i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector).  
 
 ii.	**LambdaCode** - Specify the name of the lambda code you uploaded earlier (i.e. ‘pricefunction-1.0.0.jar’)
 
@@ -93,7 +93,7 @@ Once cloud formation has successfully completed, you should have a lambda functi
 6.	Click **‘Add Notification’**
 7.	Enter a name
 8.	Choose **‘All object create** events’
-9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix
+9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix. Please make sure your souce bucket has a mazon-Chime-Voice-Connector-CDRs/json directory structure. This should be already created by Chime Voice Connector.
 10.	Chose Send to Lambda Function.
 11.	Choose lambda function that was created by your stack
 
