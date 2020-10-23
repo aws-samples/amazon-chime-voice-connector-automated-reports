@@ -24,7 +24,7 @@ https://api.pricing.ap-south-1.amazonaws.com
 
 Hence, this code makes an assumption that all artifacts, including lambda and S3 buckets will be deployed in us-east-1 (N.Virginia) region. 
 
-Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
+Once CDR is enriched, AWS QuickSight dataset can be refreshed to reflect the updated cost.
 
 ### Voice Record Enrichment Flow
 
@@ -33,7 +33,7 @@ Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report o
 3.	Lambda retrieves the CDR record for processing
 4.	Chime Voice Connector Price List API is called to get the latest pricing for the given CDR record.
 5.	CDR is enriched with the total cost and placed back on S3 (i.e. target bucket)
-6.	QuickSight data is refreshed and reports are updated.
+6.	QuickSight can be used to build cost reports.
 
 
 ## Getting Started
@@ -93,7 +93,7 @@ Once cloud formation has successfully completed, you should have a lambda functi
 6.	Click **‘Add Notification’**
 7.	Enter a name
 8.	Choose **‘All object create** events’
-9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix. Please make sure your souce bucket has a mazon-Chime-Voice-Connector-CDRs/json directory structure. This should be already created by Chime Voice Connector.
+9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix. Please make sure your souce bucket has a Amazon-Chime-Voice-Connector-CDRs/json directory structure. This should be already created by Chime Voice Connector.
 10.	Chose Send to Lambda Function.
 11.	Choose lambda function that was created by your stack
 
