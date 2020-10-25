@@ -139,7 +139,7 @@ If you are interested in modifying this code, you can go ahead and clone the rep
     - Manifest file example  
 <!-- end of the list -->
     {
-    "fileLocations": [
+      "fileLocations": [
         {
                 "URIPrefixes": [
                          “s3://targetbucketName/“
@@ -148,8 +148,8 @@ If you are interested in modifying this code, you can go ahead and clone the rep
     ],
     "globalUploadSettings": {
         "format": “JSON”
+      }
     }
-}
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
