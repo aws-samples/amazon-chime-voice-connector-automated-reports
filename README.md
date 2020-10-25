@@ -80,7 +80,7 @@ c.	Click **Next**
 
 Once cloud formation has successfully completed, you should have a lambda function deployed.  
 
-###Configuring Event Notification
+### Configuring Event Notification
 
 1.	Select **S3 service** from AWS Console
 2.	Select the original S3 bucket that stores your CDR records (This is the bucket that chime voice connector stores CDR records).
@@ -137,11 +137,20 @@ If you are interested in modifying this code, you can go ahead and clone the rep
 5. Enter the following information:
     - Data Source Name - Enter target bucket name
     - Manifest file example  
-      
-    CODE
-
+<!-- end of the list -->
+    {
+    "fileLocations": [
+        {
+                "URIPrefixes": [
+                         “s3://targetbucketName/“
+            ]
+        }
+    ],
+    "globalUploadSettings": {
+        "format": “JSON”
+    }
+}
 ## Security
-    CODE
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
