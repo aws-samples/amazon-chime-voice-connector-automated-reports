@@ -150,6 +150,31 @@ If you are interested in modifying this code, you can go ahead and clone the rep
         "format": “JSON”
       }
     }
+
+6. Click **Data Set**
+7. Choose **Create Analysis**
+8. Manage QuickSight Settings
+   a. In the top right hand corner, click on your profile icon
+   b. Click on **Manage QuickSight**
+![Image of Manage QuickSight](images/managequicksight.png)  
+
+9. On the left hand side, go to **Security and Permissions**
+10. Click **Add or Remove** button
+11. Click on your specific enriched S3 bucket that you created for this demo.
+12. Click **Finish**
+13. Click update at the bottom of the screen
+![Image of Security and Permissions](images/securityandpermission.png)
+![Image of Select Amazon S3 Bucket](images/sets3bucket.png)
+
+## Creating the Visual
+1. Inside **Analysis**, click your data set
+2. Start your first visualization by picking different fields within the **Fields list and Visual Types**
+which are located on the left hand side
+3. In the **Fields list** pick Start_Date as the X axis and Cost as the Value
+![Image of Demo Graphy](images/graph.png)
+4. For the **Visual Types**, let the console use AutoGraph which is a feautre that looks at the data you are using to 
+create the best visul types to learn or see your data in a new way.
+
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
