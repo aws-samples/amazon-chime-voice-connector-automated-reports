@@ -80,7 +80,7 @@ c.	Click **Next**
 
 Once cloud formation has successfully completed, you should have a lambda function deployed.  
 
-###Configuring Event Notification
+### Configuring Event Notification
 
 1.	Select **S3 service** from AWS Console
 2.	Select the original S3 bucket that stores your CDR records (This is the bucket that chime voice connector stores CDR records).
@@ -128,13 +128,60 @@ If you are interested in modifying this code, you can go ahead and clone the rep
        ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
 6. Run **mvn clean install** to build code inside price_lookup_function
 
-## QuickSight Reports - Coming Soon !
+## QuickSight Reports
+1. In the AWS service console, search for AWS *QuickSight *service.
+2. On the right hand side go to *Datasets*. 
+3. Click ‘**New dataset**' 
+![Image of Data Set](images/newdataset.png)
+4. From the Create a Data Set page, click on the* S3 option*.
+5. Enter the following information:
+    - Data Source Name - Enter target bucket name
+    - Manifest file example  
+<!-- end of the list -->
+    {
+      "fileLocations": [
+        {
+                "URIPrefixes": [
+                         “s3://targetbucketName/“
+            ]
+        }
+    ],
+    "globalUploadSettings": {
+        "format": “JSON”
+      }
+    }
+
+6. Click **Data Set**
+7. Choose **Create Analysis**
+8. Manage QuickSight Settings
+   a. In the top right hand corner, click on your profile icon
+   b. Click on **Manage QuickSight**
+![Image of Manage QuickSight](images/managequicksight.png)  
+
+9. On the left hand side, go to **Security and Permissions**
+10. Click **Add or Remove** button
+11. Click on your specific enriched S3 bucket that you created for this demo.
+12. Click **Finish**
+13. Click update at the bottom of the screen
+![Image of Security and Permissions](images/securityandpermission.png)
+![Image of Select Amazon S3 Bucket](images/sets3bucket.png)
+
+## Creating the Visual
+1. Inside **Analysis**, click your data set
+2. Start your first visualization by picking different fields within the **Fields list and Visual Types**
+which are located on the left hand side
+3. In the **Fields list** pick Start_Date as the X axis and Cost as the Value
+![Image of Demo Graphy](images/graph.png)
+4. For the **Visual Types**, let the console use AutoGraph which is a feautre that looks at the data you are using to 
+create the best visul types to learn or see your data in a new way.
 
 ## Security
-
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
+
+
+END
