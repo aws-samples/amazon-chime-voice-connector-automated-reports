@@ -129,11 +129,11 @@ If you are interested in modifying this code, you can go ahead and clone the rep
 6. Run **mvn clean install** to build code inside price_lookup_function
 
 ## QuickSight Reports
-1. In the AWS service console, search for AWS *QuickSight *service.
+1. In the AWS service console, search for AWS **QuickSight** service.
 2. On the right hand side go to *Datasets*. 
 3. Click ‘**New dataset**' 
 ![Image of Data Set](images/newdataset.png)
-4. From the Create a Data Set page, click on the* S3 option*.
+4. From the Create a Data Set page, click on the **S3 option**.
 5. Enter the following information:
     - Data Source Name - Enter target bucket name
     - Manifest file example  
