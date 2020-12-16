@@ -8,12 +8,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.json.CDL;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -28,6 +34,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 
 public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
@@ -36,6 +43,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private AWSPricing pricingClient = AWSPricingClientBuilder.defaultClient();
     
     private final String TARGET_BUCKET_NAME = System.getenv("TARGET_BUCKET_NAME");
+    private final String OUTPUT_FORMAT=System.getenv("OUTPUT_FORMAT");
     private final String CHIME_VOICE_CONNECTOR_SERVICE_CODE = "AmazonChimeVoiceConnector";
     private static final String DEFAULT_FORMAT_VERISION ="aws_v1";
     private static final String CDR_USAGE_TYPE = "UsageType";
@@ -89,7 +97,27 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 		            		//get the cost
 		            		JSONObject enrichedCDR = addCostToCDR( crdRecord, usage_type);
 		            		
-		            		uploadCDRToS3(enrichedCDR, key);
+		            		//check to see if desired output is in CSV
+		            		if (OUTPUT_FORMAT != null && OUTPUT_FORMAT.equalsIgnoreCase("CSV"))
+		            		{
+		            			File csvFile = convertJsonToCSV(enrichedCDR, key);
+		            			if (csvFile != null)
+		            			{
+		            				String csvKey = key + ".csv";
+		            				uploadCSVFIleToS3(csvFile, csvKey);
+		            			}
+		            			else
+		            			{
+		            				lambdaContext.getLogger().log("CSV File not generated");
+		            			}
+		            		
+		            			
+		            		}
+		            		else
+		            		{
+		            			uploadCDRToS3(enrichedCDR, key);
+		            		}
+		            		
 		            		
 		            		return String.valueOf(enrichedCDR.getFloat("CostUSD"));
 		            		
@@ -120,6 +148,74 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         	return null;
         }
       
+    }
+    
+    /**
+     * This function converst the enriched CDR from JSON to CSV format
+     * @param enrichedCDR
+     */
+    private File convertJsonToCSV(JSONObject enrichedCDR, String key )
+    {
+    	lambdaContext.getLogger().log("Converting enriched CDR to CSV format");
+    	
+    	JSONArray jsonArray = new JSONArray();
+    	jsonArray.put(enrichedCDR);
+    	
+    	//convert file to a comma deliminated file in string
+    	String csv = CDL.toString(jsonArray);
+    	
+    	lambdaContext.getLogger().log("CSV data is " + csv);
+    	
+    	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    	FileWriter filewriter = null;
+    	try
+    	{
+			stream.write(key.getBytes());
+	
+			
+			String s3ObjectName = key.substring(key.lastIndexOf('/') + 1);
+			//remove the .json extension
+			String csvFileName = FilenameUtils.removeExtension(s3ObjectName);
+			System.out.println("Removing original extension and adding new csv extension");
+			File csvFile = new File("/tmp/"+csvFileName +".csv");
+			
+			filewriter = new FileWriter(csvFile);
+		
+			filewriter.write(csv);
+		
+			filewriter.close();
+		
+			 
+			return csvFile;
+    	}
+	
+    	catch(IOException ioe)
+    	{
+    		System.out.println("IO Excpetion while writing CSV file ");
+    		System.out.println(ioe.getMessage());
+    		
+    	}
+    	finally {
+			 
+            try {
+            	
+            	
+            	if (filewriter != null )
+            	{
+            		lambdaContext.getLogger().log("csv file writer: Closing file stream ");
+            		filewriter.close();
+            	}
+            	
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+               
+            }
+		}
+       return null;
+       
+   
+    	
     }
  
     /**
@@ -268,7 +364,42 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         return jsonCDRs;
     }
     /**
-     * This method uploads the given CDR to the target bucket on S3
+     * This API uploads the given CSV file to S3
+     * @param csvFile
+     * @param key
+     * @return
+     */
+    private boolean uploadCSVFIleToS3(File csvFile, String key)
+    {
+    	try
+    	{
+	    	
+	    	PutObjectRequest s3ObjectRequest = new PutObjectRequest(TARGET_BUCKET_NAME, key, csvFile);
+	
+			ObjectMetadata metadata = new ObjectMetadata();
+	        metadata.setContentType("csv");
+	       metadata.setContentLength(csvFile.length());
+	        
+	       
+	       lambdaContext.getLogger().log("Uploading CSV file to S3 to bucket " + TARGET_BUCKET_NAME + " with key " + key);
+	        PutObjectResult result =  s3.putObject(s3ObjectRequest);
+	       
+		    return true;
+    	}
+    	catch (AmazonServiceException e) {
+			lambdaContext.getLogger().log("Amazon Service Exception : " +  e.getErrorMessage());
+		}
+    	catch (SdkClientException sdke) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+    		lambdaContext.getLogger().log("Amazon SDK Exception : " +  sdke.getMessage());
+    		sdke.printStackTrace();
+    	}
+		return false;
+    }
+    /**
+     * This method uploads the given CDR to the target bucket on S3. 
+     * If the desired file type is CSV, the CSV record is uploaded, otherwise, JSON file is uploaded.
      * @param crdRecord
      * @param filename
      * @return
@@ -288,6 +419,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 			filewriter = new FileWriter(file);
 			
 			filewriter.write(crdRecord.toString());
+			
 			filewriter.close();
 			PutObjectRequest s3ObjectRequest = new PutObjectRequest(TARGET_BUCKET_NAME, key, file);
 
@@ -302,6 +434,12 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 		catch (AmazonServiceException e) {
 			lambdaContext.getLogger().log("Amazon Service Exception : " +  e.getErrorMessage());
 		}
+		catch (SdkClientException sdke) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+    		lambdaContext.getLogger().log("Amazon SDK Exception : " +  sdke.getMessage());
+    		sdke.printStackTrace();
+    	}
 		catch(IOException ioe)
 		{
 			lambdaContext.getLogger().log("IO Exception : " +  ioe.getMessage());

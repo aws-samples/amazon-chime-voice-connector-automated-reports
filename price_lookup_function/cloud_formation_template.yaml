@@ -3,10 +3,17 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Parameters:
  ExistingCDRBucketName:
+    Description: "Existing CDR bucket that is used in Chime Voice Connector"
     Type: "String"
  TargetBucketName:
+    Description: "S3 bucket name to place the enriched CDR records"
     Type: "String"
- LambdaCode:   
+ Format:
+    Description: "Supports JSON or CSV format"
+    Type: "String"
+    Default: "JSON"
+ LambdaCode:
+    Description: "Please make sure the lambda code is uploaded to your existing CDR bucket."   
     Type: "String"
     Default: "pricefunction-1.0.0.jar"  
     
@@ -47,6 +54,7 @@ Resources:
       Environment:
         Variables:
           TARGET_BUCKET_NAME: !Ref TargetBucketName
+          OUTPUT_FORMAT: !Ref Format
           
       #Lambda inline policy
       Policies:
