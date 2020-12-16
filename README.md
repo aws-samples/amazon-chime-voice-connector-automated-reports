@@ -24,7 +24,7 @@ https://api.pricing.ap-south-1.amazonaws.com
 
 Hence, this code makes an assumption that all artifacts, including lambda and S3 buckets will be deployed in us-east-1 (N.Virginia) region. 
 
-Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report on the new enriched data.  
+Once CDR is enriched, AWS QuickSight dataset can be refreshed to reflect the updated cost.
 
 ### Voice Record Enrichment Flow
 
@@ -33,7 +33,7 @@ Once CDR is enriched, AWS QuickSight dataset automatically refreshes to report o
 3.	Lambda retrieves the CDR record for processing
 4.	Chime Voice Connector Price List API is called to get the latest pricing for the given CDR record.
 5.	CDR is enriched with the total cost and placed back on S3 (i.e. target bucket)
-6.	QuickSight data is refreshed and reports are updated.
+6.	QuickSight can be used to build cost reports.
 
 
 ## Getting Started
@@ -65,7 +65,7 @@ a.	Enter a **stack name**
 
 b.	Under Parameters, enter value for the following:
 
-i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector)
+i.	**ExistingCDRBucketName** - Enter name of your existing CDR bucket. (this bucket should already be created by Chime Voice Connector).  
 
 ii.	**LambdaCode** - Specify the name of the lambda code you uploaded earlier (i.e. ‘pricefunction-1.0.0.jar’)
 
@@ -80,7 +80,7 @@ c.	Click **Next**
 
 Once cloud formation has successfully completed, you should have a lambda function deployed.  
 
-###Configuring Event Notification
+### Configuring Event Notification
 
 1.	Select **S3 service** from AWS Console
 2.	Select the original S3 bucket that stores your CDR records (This is the bucket that chime voice connector stores CDR records).
@@ -93,7 +93,7 @@ Once cloud formation has successfully completed, you should have a lambda functi
 6.	Click **‘Add Notification’**
 7.	Enter a name
 8.	Choose **‘All object create** events’
-9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix
+9.	Insert **‘Amazon-Chime-Voice-Connector-CDRs/json/’** for prefix. Please make sure your souce bucket has a Amazon-Chime-Voice-Connector-CDRs/json directory structure. This should be already created by Chime Voice Connector.
 10.	Chose Send to Lambda Function.
 11.	Choose lambda function that was created by your stack
 
@@ -107,7 +107,7 @@ Once cloud formation has successfully completed, you should have a lambda functi
 3. Find the CDR that corresponds to the phone call that was just made.
 4. Notice that a new field - **CostUSD** which calculates the total cost of the phone call
 
-![Enriched CDR](images/final CDR.png)
+![Enriched CDR](images/final_CDR.png)
 
 
 ## Deploying from the source
@@ -128,11 +128,60 @@ If you are interested in modifying this code, you can go ahead and clone the rep
        ii. specify cdr key (i.e Amazon-Chime-Voice-Connector-CDRs/json/cdr_sample.json). 
 6. Run **mvn clean install** to build code inside price_lookup_function
 
-## Security
+## QuickSight Reports
+1. In the AWS service console, search for AWS **QuickSight** service.
+2. On the right hand side go to *Datasets*. 
+3. Click ‘**New dataset**' 
+![Image of Data Set](images/newdataset.png)
+4. From the Create a Data Set page, click on the **S3 option**.
+5. Enter the following information:
+    - Data Source Name - Enter target bucket name
+    - Manifest file example  
+<!-- end of the list -->
+    {
+      "fileLocations": [
+        {
+                "URIPrefixes": [
+                         “s3://targetbucketName/“
+            ]
+        }
+    ],
+    "globalUploadSettings": {
+        "format": “JSON”
+      }
+    }
 
+6. Click **Data Set**
+7. Choose **Create Analysis**
+8. Manage QuickSight Settings
+   a. In the top right hand corner, click on your profile icon
+   b. Click on **Manage QuickSight**
+![Image of Manage QuickSight](images/managequicksight.png)  
+
+9. On the left hand side, go to **Security and Permissions**
+10. Click **Add or Remove** button
+11. Click on your specific enriched S3 bucket that you created for this demo.
+12. Click **Finish**
+13. Click update at the bottom of the screen
+![Image of Security and Permissions](images/securityandpermission.png)
+![Image of Select Amazon S3 Bucket](images/sets3bucket.png)
+
+## Creating the Visual
+1. Inside **Analysis**, click your data set
+2. Start your first visualization by picking different fields within the **Fields list and Visual Types**
+which are located on the left hand side
+3. In the **Fields list** pick Start_Date as the X axis and Cost as the Value
+![Image of Demo Graphy](images/graph.png)
+4. For the **Visual Types**, let the console use AutoGraph which is a feautre that looks at the data you are using to 
+create the best visul types to learn or see your data in a new way.
+
+## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
+
+
+END
