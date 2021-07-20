@@ -300,15 +300,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     
     private JSONObject calculateCost(JSONObject cdrRecord, BigDecimal pricePerCall)
     {
-    	long callStartTime = cdrRecord.getLong("StartTimeEpochSeconds");
-		lambdaContext.getLogger().log("call start time (s) " + callStartTime);
-		long callEndTime = cdrRecord.getLong("EndTimeEpochSeconds");
-		lambdaContext.getLogger().log("call end time (s) " + callEndTime);
-		long duration = callEndTime - callStartTime;
-		lambdaContext.getLogger().log("Duration of call is " + duration + " seconds");
-		
-		
-		float cost = pricePerCall.floatValue() * duration;
+    	lambdaContext.getLogger().log("price per call is " + pricePerCall);
+    	lambdaContext.getLogger().log("Billable duration in minutes is  " + cdrRecord.getFloat("BillableDurationMinutes"));
+    	float cost = cdrRecord.getFloat("BillableDurationMinutes") * pricePerCall.floatValue();
 		
 		lambdaContext.getLogger().log("Cost for the phone call is " + cost);
 				
